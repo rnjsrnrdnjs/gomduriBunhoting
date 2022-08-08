@@ -10,7 +10,7 @@ const Sequelize = require("sequelize");
 const Op = Sequelize.Op;
 
 module.exports = (app) => {
-  app.use("/post", router);
+  app.use("/", router);
 
   router.post("/me", async (req, res, next) => {
     return res.json({ user: req.user });
@@ -36,6 +36,24 @@ module.exports = (app) => {
       console.error(err);
     }
   });
+  router.post("/threeCheck", async (req, res, next) => {
+    try {
+      const { req_user_id } = req.body;
+      const date = new Date(new Date().setHours(0, 0, 0, 0));
+      const phoneList = await PhoneList.findAll({
+        where: {
+          meId: req_user_id,
+          createdAt: {
+            [Op.gt]: date,
+          },
+        },
+      });
+      if (phoneList.length > 3) return res.json({ status: "false" });
+      else return res.json({ status: "true" });
+    } catch (err) {
+      console.error(err);
+    }
+  });
   router.post("/addPhoneList", async (req, res, next) => {
     try {
       const { req_user_id } = req.body;
@@ -45,6 +63,18 @@ module.exports = (app) => {
           id: req_user_id,
         },
       });
+
+      const date = new Date(new Date().setHours(0, 0, 0, 0));
+      const phoneList = await PhoneList.findAll({
+        where: {
+          meId: req_user_id,
+          createdAt: {
+            [Op.gt]: date,
+          },
+        },
+      });
+
+      if (phoneList.length > 3) return res.json({ status: "false" });
 
       let you;
       let findChk = false;
@@ -79,7 +109,7 @@ module.exports = (app) => {
           youId: you.id,
         },
       });
-      return res.json({ status: "true" });
+      return res.json({ you });
     } catch (err) {
       console.error(err);
     }

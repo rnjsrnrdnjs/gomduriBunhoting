@@ -57,6 +57,9 @@ export default function MyInfo({ user, updateUser }) {
               alignItems: "center",
               width: "100%",
             }}
+            onClick={() => {
+              navigate("/PhoneList");
+            }}
           >
             <img
               src="/assets/menu.png"
@@ -142,6 +145,10 @@ export default function MyInfo({ user, updateUser }) {
                   paddingLeft: "2vw",
                 }}
                 placeholder="닉네임"
+                value={nick}
+                onChange={(e) => {
+                  setNick(e.target.value);
+                }}
               ></input>
               <input
                 type={"text"}
@@ -156,6 +163,10 @@ export default function MyInfo({ user, updateUser }) {
                   paddingLeft: "2vw",
                 }}
                 placeholder="전화번호"
+                value={phone}
+                onChange={(e) => {
+                  setPhone(e.target.value);
+                }}
               ></input>
               <input
                 type={"text"}
@@ -170,6 +181,10 @@ export default function MyInfo({ user, updateUser }) {
                   paddingLeft: "2vw",
                 }}
                 placeholder="MBTI"
+                value={MBTI}
+                onChange={(e) => {
+                  setMBTI(e.target.value);
+                }}
               ></input>
               <input
                 type={"text"}
@@ -183,6 +198,10 @@ export default function MyInfo({ user, updateUser }) {
                   paddingLeft: "2vw",
                 }}
                 placeholder="한줄소개"
+                value={introduce}
+                onChange={(e) => {
+                  setIntroduce(e.target.value);
+                }}
               ></input>
             </div>
             <div
@@ -228,7 +247,7 @@ export default function MyInfo({ user, updateUser }) {
           >
             <div
               style={{
-                width: "60%",
+                width: "70%",
                 flexDirection: "row",
                 justifyContent: "space-around",
               }}
@@ -246,6 +265,19 @@ export default function MyInfo({ user, updateUser }) {
                   borderBottomLeftRadius: 50,
                   borderRight: "1px solid black",
                 }}
+                onClick={async () => {
+                  await axios
+                    .post(`${serverURL}/changeMyInfo`, {
+                      req_user_id: user.id,
+                      nick,
+                      phone,
+                      MBTI,
+                      introduce,
+                    })
+                    .then((res) => {
+                      window.alert("정보가 저장되었습니다.");
+                    });
+                }}
               >
                 번호저장
               </div>
@@ -260,6 +292,21 @@ export default function MyInfo({ user, updateUser }) {
                   height: 45,
                   borderTopRightRadius: 50,
                   borderBottomRightRadius: 50,
+                }}
+                onClick={async () => {
+                  await axios
+                    .post(`${serverURL}/threeCheck`, {
+                      req_user_id: user.id,
+                    })
+                    .then((res) => {
+                      if (res.data.status === "true") {
+                        navigate("/Recommand");
+                      } else {
+                        window.alert(
+                          "번호는 하루 최대 3개까지 받을수 있습니다."
+                        );
+                      }
+                    });
                 }}
               >
                 번호팅

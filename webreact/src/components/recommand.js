@@ -19,6 +19,27 @@ export default function Recommand({ user, updateUser }) {
     query: "(max-width:767px)",
   });
 
+  const [nick, setNick] = useState("");
+  const [phone, setPhone] = useState("");
+  const [MBTI, setMBTI] = useState("");
+  const [introduce, setIntroduce] = useState("");
+
+  useEffect(() => {
+    async function fetchData() {
+      await axios
+        .post(`${serverURL}/addPhoneList`, {
+          req_user_id: user.id,
+        })
+        .then((res) => {
+          setNick(res.data.you.nick);
+          setPhone(res.data.you.phone);
+          setMBTI(res.data.you.MBTI);
+          setIntroduce(res.data.you.introduce);
+        });
+    }
+    fetchData();
+  }, []);
+
   return (
     <div
       style={{
@@ -58,6 +79,9 @@ export default function Recommand({ user, updateUser }) {
               style={{
                 width: 25,
                 height: 25,
+              }}
+              onClick={() => {
+                navigate(-1);
               }}
             ></img>
           </div>
@@ -106,7 +130,6 @@ export default function Recommand({ user, updateUser }) {
             >
               <div
                 style={{
-                  fontWeight: "bold",
                   flex: 3,
                 }}
               >
@@ -114,11 +137,10 @@ export default function Recommand({ user, updateUser }) {
               </div>
               <div
                 style={{
-                  fontWeight: "bold",
                   flex: 7,
                 }}
               >
-                월급없는그녀
+                {nick}
               </div>
             </div>
             <div
@@ -139,7 +161,6 @@ export default function Recommand({ user, updateUser }) {
             >
               <div
                 style={{
-                  fontWeight: "bold",
                   flex: 3,
                   wordBreak: "break-all",
                 }}
@@ -148,11 +169,10 @@ export default function Recommand({ user, updateUser }) {
               </div>
               <div
                 style={{
-                  fontWeight: "bold",
                   flex: 7,
                 }}
               >
-                010-xxxx-xxxx
+                {phone}
               </div>
             </div>
             <div
@@ -173,7 +193,6 @@ export default function Recommand({ user, updateUser }) {
             >
               <div
                 style={{
-                  fontWeight: "bold",
                   flex: 3,
                 }}
               >
@@ -181,11 +200,10 @@ export default function Recommand({ user, updateUser }) {
               </div>
               <div
                 style={{
-                  fontWeight: "bold",
                   flex: 7,
                 }}
               >
-                ESFJ
+                {MBTI}
               </div>
             </div>
             <div
@@ -206,7 +224,6 @@ export default function Recommand({ user, updateUser }) {
             >
               <div
                 style={{
-                  fontWeight: "bold",
                   flex: 3,
                 }}
               >
@@ -214,11 +231,10 @@ export default function Recommand({ user, updateUser }) {
               </div>
               <div
                 style={{
-                  fontWeight: "bold",
                   flex: 7,
                 }}
               >
-                21/ 컴공 / 많관부~
+                {introduce}
               </div>
             </div>
           </div>

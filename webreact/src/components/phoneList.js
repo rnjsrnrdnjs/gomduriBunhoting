@@ -19,6 +19,21 @@ export default function PhoneList({ user, updateUser }) {
     query: "(max-width:767px)",
   });
 
+  const [phoneList, setPhoneList] = useState([]);
+
+  useEffect(() => {
+    async function fetchData() {
+      await axios
+        .post(`${serverURL}/getMyPhoneList`, {
+          req_user_id: user.id,
+        })
+        .then((res) => {
+          setPhoneList(res.data.phoneList);
+        });
+    }
+    fetchData();
+  }, []);
+
   return (
     <div
       style={{
@@ -58,6 +73,9 @@ export default function PhoneList({ user, updateUser }) {
               style={{
                 width: 25,
                 height: 25,
+              }}
+              onClick={() => {
+                navigate(-1);
               }}
             ></img>
           </div>

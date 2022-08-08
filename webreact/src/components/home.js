@@ -95,6 +95,9 @@ export default function Home({ user, updateUser }) {
               fontFamily: "Inter",
               fontWeight: "bold",
             }}
+            onClick={() => {
+              window.location.href = `${serverURL}/auth/kakao`;
+            }}
           >
             카카오로 시작
           </div>
