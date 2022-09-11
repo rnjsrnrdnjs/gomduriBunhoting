@@ -1,4 +1,4 @@
-//const serverURL = 'https://배포용'
-const serverURL = "http://192.168.0.23:5050";
+const serverURL = 'https://nuguknu.com'
+//const serverURL = 'http://localhost:6600'
 
-export default serverURL;
+export default serverURL
