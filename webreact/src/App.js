@@ -63,7 +63,7 @@ function App({ user, updateUser }) {
         <Route
           path="/MyInfo"
           element={
-            user.id < 0 ? (
+            user.id > 0 ? (
               <MyInfo user={user} updateUser={updateUser} />
             ) : (
               <Home user={user} updateUser={updateUser} />

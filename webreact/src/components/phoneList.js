@@ -114,7 +114,7 @@ export default function PhoneList({ user, updateUser }) {
                   marginBottom: 2,
                 }}
               >
-                {list?.nick}
+                {list?.User?.nick}
               </div>
               <div
                 style={{
@@ -123,7 +123,7 @@ export default function PhoneList({ user, updateUser }) {
                   marginBottom: 2,
                 }}
               >
-                {list?.phone}
+                {list?.User?.phone}
               </div>
               <div
                 style={{
@@ -131,7 +131,7 @@ export default function PhoneList({ user, updateUser }) {
                   marginBottom: 2,
                 }}
               >
-                {list?.MBTI}
+                {list?.User?.MBTI}
               </div>
               <div
                 style={{
@@ -139,7 +139,7 @@ export default function PhoneList({ user, updateUser }) {
                   marginBottom: 2,
                 }}
               >
-                {list?.introduce}
+                {list?.User?.introduce}
               </div>
             </div>
           ))}
