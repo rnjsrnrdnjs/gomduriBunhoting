@@ -23,6 +23,7 @@ export default function MyInfo({ user, updateUser }) {
   const [phone, setPhone] = useState(user?.phone)
   const [MBTI, setMBTI] = useState(user?.MBTI)
   const [introduce, setIntroduce] = useState(user?.introduce)
+  const [gender, setgender] = useState(user?.gender)
 
   return (
     <div
@@ -194,6 +195,7 @@ export default function MyInfo({ user, updateUser }) {
                   height: 40,
                   background: 'white',
                   border: '2px solid #FF5675',
+                  marginBottom: '2vh',
                   paddingLeft: '2vw',
                 }}
                 placeholder="한줄소개"
@@ -202,7 +204,28 @@ export default function MyInfo({ user, updateUser }) {
                   setIntroduce(e.target.value)
                 }}
               ></input>
+              <select
+                style={{
+                  borderRadius: 50,
+                  width: '110%',
+                  marginLeft: '-5%',
+                  height: 40,
+                  background: 'white',
+                  border: '2px solid #FF5675',
+                  paddingLeft: '2vw',
+                  paddingTop: 10,
+                }}
+                placeholder="성별"
+                value={gender}
+                onChange={(e) => {
+                  setgender(e.target.value)
+                }}
+              >
+                <option value={0}>남자</option>
+                <option value={1}>여자</option>
+              </select>
             </div>
+
             <div
               style={{
                 marginTop: '3vh',
@@ -286,6 +309,7 @@ export default function MyInfo({ user, updateUser }) {
                       phone,
                       MBTI,
                       introduce,
+                      gender,
                     })
                     .then((res) => {
                       if (res.data.status === 'true') {

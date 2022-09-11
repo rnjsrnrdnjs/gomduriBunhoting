@@ -17,7 +17,7 @@ module.exports = (app) => {
   })
   router.post('/changeMyInfo', async (req, res, next) => {
     try {
-      const { req_user_id, nick, phone, MBTI, introduce } = req.body
+      const { req_user_id, nick, phone, MBTI, gender, introduce } = req.body
       if (!nick || !phone || !MBTI || !introduce)
         return res.json({ status: 'false' })
       await User.update(
@@ -26,6 +26,7 @@ module.exports = (app) => {
           phone,
           MBTI,
           introduce,
+          gender,
         },
         {
           where: {
@@ -55,7 +56,7 @@ module.exports = (app) => {
           },
         },
       })
-      if (phoneList.length > 3) return res.json({ status: 'false' })
+      if (phoneList.length >= 3) return res.json({ status: 'false' })
       else return res.json({ status: 'true' })
     } catch (err) {
       console.error(err)
@@ -81,7 +82,7 @@ module.exports = (app) => {
         },
       })
 
-      if (phoneList.length > 3) return res.json({ status: 'false' })
+      if (phoneList.length >= 3) return res.json({ status: 'false' })
 
       let you
       let findChk = false
@@ -91,9 +92,6 @@ module.exports = (app) => {
           you = await User.findOne({
             where: {
               gender: 1,
-              [Op.ne]: {
-                phone: '',
-              },
             },
             order: Sequelize.literal('rand()'),
           })
@@ -101,14 +99,10 @@ module.exports = (app) => {
           you = await User.findOne({
             where: {
               gender: 0,
-              [Op.ne]: {
-                phone: '',
-              },
             },
             order: Sequelize.literal('rand()'),
           })
         }
-
         const phoneListChk = await PhoneList.findOne({
           where: {
             meId: process.env.DEV_MODE === 'prod' ? req.user.id : req_user_id,
@@ -123,15 +117,14 @@ module.exports = (app) => {
         )
           findChk = true
       }
-      if (you) {
+      if (you && findChk) {
         await PhoneList.create({
-          where: {
-            meId: process.env.DEV_MODE === 'prod' ? req.user.id : req_user_id,
-            youId: you.id,
-          },
+          meId: process.env.DEV_MODE === 'prod' ? req.user.id : req_user_id,
+          youId: you.id,
         })
       }
-      return res.json({ you })
+      if (findChk) return res.json({ you })
+      else return res.json({ status: 'false' })
     } catch (err) {
       console.error(err)
     }
