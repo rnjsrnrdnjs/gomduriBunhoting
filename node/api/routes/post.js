@@ -89,13 +89,21 @@ module.exports = (app) => {
       while (findChk) {
         if (me.gender === 0) {
           you = await User.findOne({
-            where: { gender: 1 },
+            where: {
+              gender: 1,
+              [Op.ne]: {
+                phone: '',
+              },
+            },
             order: Sequelize.literal('rand()'),
           })
         } else if (me.gender === 1) {
           you = await User.findOne({
             where: {
               gender: 0,
+              [Op.ne]: {
+                phone: '',
+              },
             },
             order: Sequelize.literal('rand()'),
           })
