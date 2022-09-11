@@ -1,4 +1,4 @@
-const Sequelize = require("sequelize");
+const Sequelize = require('sequelize')
 
 module.exports = class PhoneList extends Sequelize.Model {
   static init(sequelize) {
@@ -14,22 +14,21 @@ module.exports = class PhoneList extends Sequelize.Model {
           allowNull: false,
           unique: true,
         },
-      
       },
       {
         sequelize,
-        timestamps: false,
+        timestamps: true,
         underscored: false,
-        modelName: "PhoneList",
-        tableName: "phoneLists",
+        modelName: 'PhoneList',
+        tableName: 'phoneLists',
         paranoid: false,
-        charset: "utf8",
-        collate: "utf8_general_ci",
-      }
-    );
+        charset: 'utf8',
+        collate: 'utf8_general_ci',
+      },
+    )
   }
 
   static associate(db) {
     //db.User.hasMany(db.Post);
   }
-};
+}

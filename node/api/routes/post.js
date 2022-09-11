@@ -33,7 +33,12 @@ module.exports = (app) => {
           },
         },
       )
-      return res.json({ status: 'true' })
+      const user = await User.findOne({
+        where: {
+          id: process.env.DEV_MODE === 'prod' ? req.user.id : req_user_id,
+        },
+      })
+      return res.json({ status: 'true', user })
     } catch (err) {
       console.error(err)
     }
@@ -62,14 +67,14 @@ module.exports = (app) => {
 
       const me = await User.findOne({
         where: {
-          id: req_user_id,
+          id: process.env.DEV_MODE === 'prod' ? req.user.id : req_user_id,
         },
       })
 
       const date = new Date(new Date().setHours(0, 0, 0, 0))
       const phoneList = await PhoneList.findAll({
         where: {
-          meId: req_user_id,
+          meId: process.env.DEV_MODE === 'prod' ? req.user.id : req_user_id,
           createdAt: {
             [Op.gt]: date,
           },
@@ -98,19 +103,26 @@ module.exports = (app) => {
 
         const phoneListChk = await PhoneList.findOne({
           where: {
-            meId: req_user_id,
+            meId: process.env.DEV_MODE === 'prod' ? req.user.id : req_user_id,
             youId: you.id,
           },
         })
-        if (!phoneListChk && parseInt(req_user_id) !== parseInt(you.id))
+        if (
+          !phoneListChk &&
+          parseInt(
+            process.env.DEV_MODE === 'prod' ? req.user.id : req_user_id,
+          ) !== parseInt(you.id)
+        )
           findChk = true
       }
-      await PhoneList.create({
-        where: {
-          meId: req_user_id,
-          youId: you.id,
-        },
-      })
+      if (you) {
+        await PhoneList.create({
+          where: {
+            meId: process.env.DEV_MODE === 'prod' ? req.user.id : req_user_id,
+            youId: you.id,
+          },
+        })
+      }
       return res.json({ you })
     } catch (err) {
       console.error(err)
@@ -121,7 +133,7 @@ module.exports = (app) => {
       const { req_user_id } = req.body
       const phoneList = await PhoneList.findAll({
         where: {
-          meId: req_user_id,
+          meId: process.env.DEV_MODE === 'prod' ? req.user.id : req_user_id,
         },
       })
 

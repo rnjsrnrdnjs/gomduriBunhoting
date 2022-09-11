@@ -19,10 +19,10 @@ export default function MyInfo({ user, updateUser }) {
     query: '(max-width:767px)',
   })
 
-  const [nick, setNick] = useState('')
-  const [phone, setPhone] = useState('')
-  const [MBTI, setMBTI] = useState('')
-  const [introduce, setIntroduce] = useState('')
+  const [nick, setNick] = useState(user?.nick)
+  const [phone, setPhone] = useState(user?.phone)
+  const [MBTI, setMBTI] = useState(user?.MBTI)
+  const [introduce, setIntroduce] = useState(user?.introduce)
 
   return (
     <div
@@ -288,7 +288,12 @@ export default function MyInfo({ user, updateUser }) {
                       introduce,
                     })
                     .then((res) => {
-                      window.alert('정보가 저장되었습니다.')
+                      if (res.data.status === 'true') {
+                        window.alert('정보가 저장되었습니다.')
+                        updateUser(res.data.user)
+                      } else {
+                        window.alert('다시 시도해 주세요.')
+                      }
                     })
                 }}
               >

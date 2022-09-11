@@ -5,13 +5,11 @@ const fs = require('fs')
 const https = require('https')
 dotenv.config()
 
-/*
 const options = {
-  ca: fs.readFileSync('/etc/letsencrypt/live/lovelyme.live/fullchain.pem'),
-  key: fs.readFileSync('/etc/letsencrypt/live/lovelyme.live/privkey.pem'),
-  cert: fs.readFileSync('/etc/letsencrypt/live/lovelyme.live/cert.pem'),
+  ca: fs.readFileSync('/etc/letsencrypt/live/nuguknu.com/fullchain.pem'),
+  key: fs.readFileSync('/etc/letsencrypt/live/nuguknu.com/privkey.pem'),
+  cert: fs.readFileSync('/etc/letsencrypt/live/nuguknu.com/cert.pem'),
 }
-*/
 
 async function startServer() {
   const app = express()
@@ -32,7 +30,6 @@ async function startServer() {
       process.exit(1)
     })
 
-  /*
   http
     .createServer(function (req, res) {
       res.writeHead(301, {
@@ -41,8 +38,7 @@ async function startServer() {
       res.end()
     })
     .listen(8080)
- https.createServer(options, app).listen(4430)
- */
+  https.createServer(options, app).listen(4430)
 }
 
 startServer()
